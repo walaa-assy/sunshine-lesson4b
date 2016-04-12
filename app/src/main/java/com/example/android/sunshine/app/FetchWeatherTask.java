@@ -43,13 +43,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
-   // private ArrayAdapter<String> mForecastAdapter;
+    // private ArrayAdapter<String> mForecastAdapter;
     private final Context mContext;
 
-   // public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter)
-    public FetchWeatherTask(Context context){
+    // public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter)
+    public FetchWeatherTask(Context context) {
         mContext = context;
-       // mForecastAdapter = forecastAdapter;
+        // mForecastAdapter = forecastAdapter;
     }
 
     private boolean DEBUG = true;
@@ -177,9 +177,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
      * Fortunately parsing is easy:  constructor takes the JSON string and converts it
      * into an Object hierarchy for us.
      */
-  //  private String[] getWeatherDataFromJson(String forecastJsonStr,
+    //  private String[] getWeatherDataFromJson(String forecastJsonStr,
     private void getWeatherDataFromJson(String forecastJsonStr,
-                                            String locationSetting)
+                                        String locationSetting)
             throws JSONException {
 
         // Now we have a String representing the complete forecast in JSON Format.
@@ -305,7 +305,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             if (cVVector.size() > 0) {
                 // Student: call bulkInsert to add the weatherEntries to the database here
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                                cVVector.toArray(cvArray);
+                cVVector.toArray(cvArray);
                 inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, cvArray);
             }
 
@@ -319,7 +319,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-   // protected String[] doInBackground(String... params) {
+    // protected String[] doInBackground(String... params) {
     protected Void doInBackground(String... params) {
         // If there's no zip code, there's nothing to look up.  Verify size of params.
         if (params.length == 0) {
@@ -394,8 +394,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
         } catch (JSONException e) {
-                        Log.e(LOG_TAG, e.getMessage(), e);
-                       e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
