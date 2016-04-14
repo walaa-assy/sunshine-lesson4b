@@ -18,13 +18,19 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    private boolean mUseTodayLayout = true;
+
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private static final int VIEW_TYPE_COUNT = 2;
 
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+                mUseTodayLayout = useTodayLayout;
+            }
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override
@@ -81,7 +87,22 @@ public class ForecastAdapter extends CursorAdapter {
         // Use placeholder image for now
 //        ImageView iconView = (ImageView) view.findViewById(R.id.list_item_icon);
 //        iconView.setImageResource(R.drawable.ic_launcher);
-        viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
+       // viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
+        int viewType = getItemViewType(cursor.getPosition());
+        switch (viewType) {
+            case VIEW_TYPE_TODAY: {
+                // Get weather icon
+                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+                break;
+            }
+            case VIEW_TYPE_FUTURE_DAY: {
+                // Get weather icon
+                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+                break;
+            }
+        }
 
         // Read date from cursor
         long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
@@ -97,6 +118,7 @@ public class ForecastAdapter extends CursorAdapter {
 //        TextView descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
 //        descriptionView.setText(description);
         viewHolder.descriptionView.setText(description);
+        viewHolder.iconView.setContentDescription(description);
 
         // Read user preference for metric or imperial temperature units
         boolean isMetric = Utility.isMetric(context);
